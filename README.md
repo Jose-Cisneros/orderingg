@@ -6,6 +6,6 @@ GRUPO NÚMERO 4
 
 ## Integrantes
 
--Merlano Mario
--Albiero Agustín
+-Merlano Mario '\n'
+-Albiero Agustín '\n'
 -Cisneros José
