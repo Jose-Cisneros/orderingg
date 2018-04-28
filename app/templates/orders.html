@@ -111,8 +111,8 @@
 
     <!-- Template handlebars del select de productos -->
     <script id="select-template" type="text/x-handlebars-template">
-        <div class="select">
-            <select id="select-prod">
+        <div class="select" >
+            <select id="select-prod" disabled="false">
                 <option disabled selected value="">Seleccione un producto</option>
                 {{# each products }}
                     <option value="{{ id }}">{{ name }}</option>

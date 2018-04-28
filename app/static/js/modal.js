@@ -6,12 +6,13 @@ const Modal = (function () {
     function open($modal) {
         const editTitle = document.getElementById('edit-title');
         const preUnitario = document.getElementById('field_preUnitario');
+        const select = document.getElementById('select-prod');
         const saveTitle = document.getElementById('save-title');
         const editButton = document.getElementById('edit-button');
         const saveButton = document.getElementById('save-button');
-
         $modal.classList.add('is-active');
 
+        select.disabled = false;
         saveTitle.classList.remove('is-hidden');
         saveButton.classList.remove('is-hidden');
 
