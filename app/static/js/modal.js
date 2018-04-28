@@ -5,6 +5,7 @@ const Modal = (function () {
      **/
     function open($modal) {
         const editTitle = document.getElementById('edit-title');
+        const preUnitario = document.getElementById('field_preUnitario');
         const saveTitle = document.getElementById('save-title');
         const editButton = document.getElementById('edit-button');
         const saveButton = document.getElementById('save-button');
@@ -14,6 +15,7 @@ const Modal = (function () {
         saveTitle.classList.remove('is-hidden');
         saveButton.classList.remove('is-hidden');
 
+        preUnitario.classList.add('is-hidden');
         editButton.classList.add('is-hidden');
         editTitle.classList.add('is-hidden');
     }

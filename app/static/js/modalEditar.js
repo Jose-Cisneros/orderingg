@@ -5,11 +5,13 @@ const ModalEditar = (function () {
      **/
     function open($modal) {
         const editTitle = document.getElementById('edit-title');
+        const preUnitario = document.getElementById('field_preUnitario');
         const saveTitle = document.getElementById('save-title');
         const editButton = document.getElementById('edit-button');
         const saveButton = document.getElementById('save-button');
         $modal.classList.add('is-active');
 
+        preUnitario.classList.remove('is-hidden');
         editTitle.classList.remove('is-hidden');
         editButton.classList.remove('is-hidden');
 
