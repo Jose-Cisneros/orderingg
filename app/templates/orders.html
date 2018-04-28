@@ -43,7 +43,7 @@
                         <div id="field_preUnitario" class="field">
                             <label class="label">Precio unitario</label>
                             <div class="control">
-                                <input id="punit" class="input" type="number">
+                                <input id="punit" class="input" type="number" disabled>
                             </div>
                         </div>
                         <div class="field">
@@ -92,7 +92,7 @@
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
-                        <td><a onclick="refs.modalEditar.open()"><img class="icon"src="https://icon-icons.com/icons2/685/PNG/512/edit2_icon-icons.com_61199.png" alt="titulo enlace"/></a></td>
+                        <td><a onclick="refs.modalEditar.open({{ id }})"><img class="icon"src="https://icon-icons.com/icons2/685/PNG/512/edit2_icon-icons.com_61199.png" alt="titulo enlace"/></a></td>
                     </tr>
                 {{/ each }}
             </tbody>

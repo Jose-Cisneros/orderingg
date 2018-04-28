@@ -1,6 +1,14 @@
+function actualizarTotal(cantidad)
+{
+    const preUnitario = document.getElementById('punit').value;
+    total=preUnitario*cantidad;
+    const preTotal = document.getElementById('total-price');
+    preTotal.innerHTML="Precio total: $ "+ total;
+
+}
+
 (function () {
     const $totalPrice = document.querySelector('#total-price');
-
     // Estado de la aplicacion
     const state = {
         products: API.getProducts(),
@@ -16,7 +24,7 @@
      **/
     function updateTotalPrice() {
         const totalPrice = state.selectedProduct.price * state.quantity;
-        $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
+        $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`;
     }
 
     /**
@@ -73,7 +81,7 @@
             products: state.products,
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
-            onAddProduct: onAddProduct            
+            onAddProduct: onAddProduct,         
         })
         ;
         // Inicializamos la tabla
