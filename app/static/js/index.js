@@ -64,6 +64,31 @@ function actualizarTotal(cantidad)
             });
     }
 
+
+    /**
+     * Edita el producto de una orden
+     *
+     **/
+    function onEditProduct() {
+     
+        const cantidad = document.getElementById('quantity').value;
+        const idProducto = document.getElementById('select-prod').value;
+        const nombre= document.getElementById('select-prod').options[idProducto].innerText;
+        API.editProduct(1,idProducto, cantidad,API.getOrderProduct(1,idProducto))
+            .then(function (r) {
+                if (r.error) {
+                    console.error(r.error);
+                } else {
+                    API.getOrder().then(function (data) {
+                        refs.table.update(data);
+                        alert(nombre+" actualizada!")
+                    });
+
+                    refs.modal.close();
+                }
+            });
+    }
+
     /**
      * Inicializa la aplicacion
      **/
@@ -73,7 +98,8 @@ function actualizarTotal(cantidad)
             products: state.products,
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
-            onAddProduct: onAddProduct            
+            onAddProduct: onAddProduct,      
+            onEditProduct: onEditProduct,        
         })
         ;
         refs.modalEditar = ModalEditar.init({
@@ -81,7 +107,8 @@ function actualizarTotal(cantidad)
             products: state.products,
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
-            onAddProduct: onAddProduct,         
+            onAddProduct: onAddProduct,  
+            onEditProduct: onEditProduct,         
         })
         ;
         // Inicializamos la tabla
