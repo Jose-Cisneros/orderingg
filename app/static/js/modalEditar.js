@@ -1,4 +1,4 @@
-const Modal = (function () {
+const ModalEditar = (function () {
 
     /**
      * Abre el modal
@@ -12,13 +12,13 @@ const Modal = (function () {
         const saveButton = document.getElementById('save-button');
         $modal.classList.add('is-active');
 
-        select.disabled = false;
-        saveTitle.classList.remove('is-hidden');
-        saveButton.classList.remove('is-hidden');
+        select.disabled = true;
+        preUnitario.classList.remove('is-hidden');
+        editTitle.classList.remove('is-hidden');
+        editButton.classList.remove('is-hidden');
 
-        preUnitario.classList.add('is-hidden');
-        editButton.classList.add('is-hidden');
-        editTitle.classList.add('is-hidden');
+        saveTitle.classList.add('is-hidden');
+        saveButton.classList.add('is-hidden');
     }
 
     /**
@@ -34,20 +34,13 @@ const Modal = (function () {
     function init(config) {
         const $modal = document.querySelector(config.el);
 
-        // Inicializamos el select de productos
-        Select.init({
-            el: '#select',
-            data: config.products,
-            onSelect: config.onProductSelect
-        });
-
         // Nos ponemos a escuchar cambios en el input de cantidad
         $modal.querySelector('#quantity')
             .addEventListener('input', function () {
                 config.onChangeQunatity(this.value)
             });
 
-        $modal.querySelector('#save-button')
+        $modal.querySelector('#edit-button')
             .addEventListener('click', config.onAddProduct);
 
         return {

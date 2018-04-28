@@ -31,7 +31,7 @@
             <div class="modal-card">
                 <header class="modal-card-head">
                     <p id="save-title" class="modal-card-title">Agregar producto</p>
-                    <p id="edit-title" hidden class="modal-card-title">Editar producto</p>
+                    <p id="edit-title" class="modal-card-title">Editar producto</p>
                     <button class="delete" aria-label="close" onclick="refs.modal.close()"></button>
                 </header>
                 <section class="modal-card-body">
@@ -40,7 +40,12 @@
                             <labe class="label">Seleccionar producto</labe>
                             <div id="select" class="control"></div>
                         </div>
-
+                        <div id="field_preUnitario" class="field">
+                            <label class="label">Precio unitario</label>
+                            <div class="control">
+                                <input id="punit" class="input" type="number">
+                            </div>
+                        </div>
                         <div class="field">
                             <label class="label">Cantidad</label>
                             <div class="control">
@@ -76,6 +81,7 @@
                     <td>Precio unitario</td>
                     <td>Cantidad</td>
                     <td>Precio total</td>
+                    <td>Editar</td>
                 </tr>
             </thead>
             <tbody>
@@ -86,6 +92,7 @@
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
+                        <td><a onclick="refs.modalEditar.open()"><img class="icon"src="https://icon-icons.com/icons2/685/PNG/512/edit2_icon-icons.com_61199.png" alt="titulo enlace"/></a></td>
                     </tr>
                 {{/ each }}
             </tbody>
@@ -96,6 +103,7 @@
                     <td></td>
                     <td>Total</td>
                     <td>{{ orderPrice }}</td>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>
@@ -103,8 +111,8 @@
 
     <!-- Template handlebars del select de productos -->
     <script id="select-template" type="text/x-handlebars-template">
-        <div class="select">
-            <select id="select-prod">
+        <div class="select" >
+            <select id="select-prod" disabled="false">
                 <option disabled selected value="">Seleccione un producto</option>
                 {{# each products }}
                     <option value="{{ id }}">{{ name }}</option>
@@ -119,6 +127,9 @@
 
 <!-- Componente de la modal-->
 <script src="/static/js/modal.js"></script>
+
+<!-- Componente de la modal-->
+<script src="/static/js/modalEditar.js"></script>
 
 <!-- Componente de la tabla -->
 <script src="/static/js/table.js"></script>
