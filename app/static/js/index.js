@@ -1,12 +1,3 @@
-function actualizarTotal(cantidad)
-{
-    const preUnitario = document.getElementById('punit').value;
-    total=preUnitario*cantidad;
-    const preTotal = document.getElementById('total-price');
-    preTotal.innerHTML="Precio total: $ "+ total;
-
-}
-
 (function () {
     const $totalPrice = document.querySelector('#total-price');
     // Estado de la aplicacion

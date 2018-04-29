@@ -15,12 +15,28 @@ const Modal = (function () {
 
       
     }
+
+    function llenarModal(idProducto) //Completa los campos del modal con el producto pasado por parametro
+    {
+        const preUnitario = document.getElementById('punit');
+        const preTotal = document.getElementById('total-price');
+        const cantidad = document.getElementById('quantity');
+        const select = document.getElementById('select-prod');
+        API.getOrderProduct(1,idProducto).then(function (result)
+        {
+            select.value=idProducto;
+            cantidad.value=result["quantity"];
+            preUnitario.value=result["price"];
+            preTotal.innerHTML = "Precio total: $ "+ result['totalPrice'];
+
+        });
+    }
     /**
      * Abre el modal
      **/
 
      
-    function open($modal) {
+    function open($modal,idProducto="") {
         const editTitle = document.getElementById('edit-title');
         const preUnitario = document.getElementById('field_preUnitario');
         const select = document.getElementById('select-prod');
@@ -30,16 +46,33 @@ const Modal = (function () {
         const cantidad= document.getElementById('quantity');
         $modal.classList.add('is-active');
 
+        if (idProducto!="")
+        {
 
-        vaciarModal();
-        select.disabled = false;
-        saveTitle.classList.remove('is-hidden');
-        saveButton.classList.remove('is-hidden');
-        cantidad.removeAttribute("onkeyup");
-        preUnitario.classList.add('is-hidden');
-        editButton.classList.add('is-hidden');
-        editTitle.classList.add('is-hidden');
-        window.cantidad();
+            select.disabled = true;
+            //cantidad.setAttribute("onkeyup","actualizarTotal(this.value)");
+            preUnitario.classList.remove('is-hidden');
+            editTitle.classList.remove('is-hidden');
+            editButton.classList.remove('is-hidden');
+    
+            saveTitle.classList.add('is-hidden');
+            saveButton.classList.add('is-hidden');
+            llenarModal(idProducto);
+            API.getOrderProduct(1,idProducto).then(function(r){window.onProductSelect(r);});
+        }
+        else
+        {
+            vaciarModal();
+            select.disabled = false;
+            saveTitle.classList.remove('is-hidden');
+            saveButton.classList.remove('is-hidden');
+            cantidad.removeAttribute("onkeyup");
+            preUnitario.classList.add('is-hidden');
+            editButton.classList.add('is-hidden');
+            editTitle.classList.add('is-hidden');
+            window.cantidad();
+        }
+    
     }
 
     /**
