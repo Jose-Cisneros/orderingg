@@ -16,7 +16,8 @@ function actualizarTotal(cantidad)
         quantity: 0,
         order: API.getOrder()
     }
-
+    window.onProductSelect=seleccionarProducto;
+    window.cantidad=vaciarCantidad;
     const refs = {}
 
     /**
@@ -35,7 +36,12 @@ function actualizarTotal(cantidad)
         state.selectedProduct = selectedProduct;
         updateTotalPrice();
     }
-
+    function seleccionarProducto(selectedProduct) {
+        state.selectedProduct = selectedProduct;
+    }
+    function vaciarCantidad() {
+        state.quantity = 0;
+    }
     /**
      * Dispara la actualizacion del precio total del producto
      * al cambiar la cantidad del producto
@@ -116,6 +122,7 @@ function actualizarTotal(cantidad)
             el: '#orders',
             data: state.order
         });
+        //const $botonEditar = document.querySelector("");
     }
 
     init();

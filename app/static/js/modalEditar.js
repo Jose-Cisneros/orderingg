@@ -30,15 +30,15 @@ const ModalEditar = (function () {
         $modal.classList.add('is-active');
 
         select.disabled = true;
-        cantidad.setAttribute("onkeyup","actualizarTotal(this.value)");
+        //cantidad.setAttribute("onkeyup","actualizarTotal(this.value)");
         preUnitario.classList.remove('is-hidden');
         editTitle.classList.remove('is-hidden');
         editButton.classList.remove('is-hidden');
 
         saveTitle.classList.add('is-hidden');
         saveButton.classList.add('is-hidden');
-        
         llenarModal(idProducto);
+        API.getOrderProduct(1,idProducto).then(function(r){window.onProductSelect(r);});
     }
 
     /**
@@ -53,6 +53,7 @@ const ModalEditar = (function () {
      **/
     function init(config) {
         const $modal = document.querySelector(config.el);
+
         // Nos ponemos a escuchar cambios en el input de cantidad
         $modal.querySelector('#quantity')
             .addEventListener('input', function () {

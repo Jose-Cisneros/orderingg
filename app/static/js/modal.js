@@ -39,6 +39,7 @@ const Modal = (function () {
         preUnitario.classList.add('is-hidden');
         editButton.classList.add('is-hidden');
         editTitle.classList.add('is-hidden');
+        window.cantidad();
     }
 
     /**
@@ -76,7 +77,8 @@ const Modal = (function () {
 
         return {
             close: close.bind(null, $modal),
-            open: open.bind(null, $modal)
+            open: open.bind(null, $modal),
+
         }
     }
 

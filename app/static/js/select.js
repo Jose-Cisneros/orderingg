@@ -1,7 +1,6 @@
 const Select = (function () {
     const source = document.getElementById('select-template').innerHTML;
     const template = Handlebars.compile(source);
-
     /*
      * Inicializa el select de productos.
      *
@@ -38,7 +37,6 @@ const Select = (function () {
         const product = config.data.filter(function (product) {
             return product.id == id;
         })[0];
-
         config.onSelect(product);
     }
 
@@ -50,7 +48,6 @@ const Select = (function () {
      */
     function render($el, config) {
         $el.innerHTML = template({ products: config.data });
-
         const $select = $el.querySelector('select')
             .addEventListener('change', onChange.bind(null, config));
     }
