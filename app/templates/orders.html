@@ -16,8 +16,8 @@
 
         <div class="columns">
             <div class="column is-12">
-                <button class="button is-success is-pulled-right" onclick="refs.modal.open('','agregar')">
-                    <span class="icon"><i class="fas fa-plus"></i></span>
+                <button class="button is-info is-pulled-right" onclick="refs.modal.open('','agregar')">
+                    <span class="icon"><i class="fas fa-plus-square"></i></span>
                     <span>Agregar</span>
                 </button>
             </div>
@@ -32,6 +32,8 @@
                 <header class="modal-card-head">
                     <p id="save-title" class="modal-card-title">Agregar producto</p>
                     <p id="edit-title" class="modal-card-title">Editar producto</p>
+                    <p id="delete-title" class="modal-card-title">Eliminar producto</p>
+                    
                     <button class="delete" aria-label="close" onclick="refs.modal.close()"></button>
                 </header>
                 <section class="modal-card-body">
@@ -61,6 +63,7 @@
                 <footer class="modal-card-foot">
                     <button id="save-button" class="button is-success">Guardar</button>
                     <button id="edit-button" class="button is-warning">Editar</button>
+                    <button id="delete-button" class="button is-danger">Eliminar</button>
                     <button class="button" onclick="refs.modal.close()">Cancelar</button>
                 </footer>
             </div>
@@ -82,6 +85,8 @@
                     <td>Cantidad</td>
                     <td>Precio total</td>
                     <td>Editar</td>
+                    <td>Eliminar</td>
+
                 </tr>
             </thead>
             <tbody>
@@ -92,7 +97,8 @@
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
-                        <td><a onclick="refs.modal.open({{ id }},'editar')"><img class="icon"src="https://icon-icons.com/icons2/685/PNG/512/edit2_icon-icons.com_61199.png" alt="titulo enlace"/></a></td>
+                        <td><a onclick="refs.modal.open({{ id }},'editar')"><i class="far fa-edit"></i></a></td>
+                        <td><a onclick="refs.modal.open({{ id }},'delete')"><i class="far fa-trash-alt"></i></a></td>
                         
                     </tr>
                 {{/ each }}

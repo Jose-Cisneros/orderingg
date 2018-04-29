@@ -78,13 +78,35 @@
                 } else {
                     API.getOrder().then(function (data) {
                         refs.table.update(data);
-                        alert(nombre+" actualizada!")
+                        alert("El producto '" + nombre + "' ha sido actualizado!")
                     });
 
                     refs.modal.close();
                 }
             });
     }
+
+    function onDeleteProduct() {
+     
+        const idProducto = document.getElementById('select-prod').value;
+        const nombre= document.getElementById('select-prod').options[idProducto].innerText;
+
+        API.deleteProduct(1,idProducto).then(function (r) {
+            if (r.error) {
+                console.error(r.error);
+            } else {
+                API.getOrder().then(function (data) {
+                    refs.table.update(data);
+                    alert("El producto '" + nombre + "' ha sido eliminado!")
+                });
+
+                refs.modal.close();
+            }
+        });
+    }
+
+
+
 
     /**
      * Inicializa la aplicacion
@@ -96,7 +118,8 @@
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
             onAddProduct: onAddProduct,      
-            onEditProduct: onEditProduct,        
+            onEditProduct: onEditProduct,
+            onDeleteProduct: onDeleteProduct,        
         })
         ;
         // Inicializamos la tabla
