@@ -1,44 +1,124 @@
+function actualizarTotal(cantidad)
+{
+    const preUnitario = document.getElementById('punit').value;
+    total=preUnitario*cantidad;
+    const preTotal = document.getElementById('total-price');
+    preTotal.innerHTML="Precio total: $ "+ total;
+
+}
+
 (function () {
     const $totalPrice = document.querySelector('#total-price');
-
     // Estado de la aplicacion
     const state = {
+        products: API.getProducts(),
         selectedProduct: null,
         quantity: 0,
+        order: API.getOrder()
     }
+
+    const refs = {}
 
     /**
      * Actualiza el valor del precio total
      **/
     function updateTotalPrice() {
         const totalPrice = state.selectedProduct.price * state.quantity;
-        $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
+        $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`;
+    }
+
+    /**
+     * Dispara la actualizacion del precio total del producto
+     * al cambiar el producto seleccionado
+     **/
+    function onProductSelect(selectedProduct) {
+        state.selectedProduct = selectedProduct;
+        updateTotalPrice();
+    }
+
+    /**
+     * Dispara la actualizacion del precio total del producto
+     * al cambiar la cantidad del producto
+     **/
+    function onChangeQunatity(quantity) {
+        state.quantity = quantity;
+        updateTotalPrice();
+    }
+
+    /**
+     * Agrega un producto a una orden
+     *
+     **/
+    function onAddProduct() {
+        API.addProduct(1, state.selectedProduct, state.quantity)
+            .then(function (r) {
+                if (r.error) {
+                    console.error(r.error);
+                } else {
+                    API.getOrder().then(function (data) {
+                        refs.table.update(data);
+                    });
+
+                    refs.modal.close();
+                }
+            });
+    }
+
+
+    /**
+     * Edita el producto de una orden
+     *
+     **/
+    function onEditProduct() {
+     
+        const cantidad = document.getElementById('quantity').value;
+        const idProducto = document.getElementById('select-prod').value;
+        const nombre= document.getElementById('select-prod').options[idProducto].innerText;
+        API.editProduct(1,idProducto, cantidad,API.getOrderProduct(1,idProducto))
+            .then(function (r) {
+                if (r.error) {
+                    console.error(r.error);
+                } else {
+                    API.getOrder().then(function (data) {
+                        refs.table.update(data);
+                        alert(nombre+" actualizada!")
+                    });
+
+                    refs.modal.close();
+                }
+            });
     }
 
     /**
      * Inicializa la aplicacion
      **/
     function init() {
-        Modal.init({
+        refs.modal = Modal.init({
             el: '#modal',
-            products: API.getProducts(),
-            onProductSelect: function (selectedProduct) {
-                state.selectedProduct = selectedProduct;
-                updateTotalPrice();
-            },
-            onChangeQunatity: function (quantity) {
-                state.quantity = quantity;
-                updateTotalPrice();
-            }
-        });
-
+            products: state.products,
+            onProductSelect: onProductSelect,
+            onChangeQunatity: onChangeQunatity,
+            onAddProduct: onAddProduct,      
+            onEditProduct: onEditProduct,        
+        })
+        ;
+        refs.modalEditar = ModalEditar.init({
+            el: '#modal',
+            products: state.products,
+            onProductSelect: onProductSelect,
+            onChangeQunatity: onChangeQunatity,
+            onAddProduct: onAddProduct,  
+            onEditProduct: onEditProduct,         
+        })
+        ;
         // Inicializamos la tabla
-        Table.init({
+        refs.table = Table.init({
             el: '#orders',
-            data: API.getOrder()
+            data: state.order
         });
     }
 
     init();
+    window.refs = refs;
 })()
 

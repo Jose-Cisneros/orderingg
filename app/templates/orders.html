@@ -16,8 +16,8 @@
 
         <div class="columns">
             <div class="column is-12">
-                <button class="button is-info is-pulled-right" onclick="Modal.open()">
-                    <span class="icon"><i class="fas fa-plus-square"></i></span>
+                <button class="button is-success is-pulled-right" onclick="refs.modal.open()">
+                    <span class="icon"><i class="fas fa-plus"></i></span>
                     <span>Agregar</span>
                 </button>
             </div>
@@ -30,8 +30,9 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Agregar producto</p>
-                    <button class="delete" aria-label="close" onclick="Modal.close()"></button>
+                    <p id="save-title" class="modal-card-title">Agregar producto</p>
+                    <p id="edit-title" class="modal-card-title">Editar producto</p>
+                    <button class="delete" aria-label="close" onclick="refs.modal.close()"></button>
                 </header>
                 <section class="modal-card-body">
                     <form>
@@ -39,7 +40,12 @@
                             <labe class="label">Seleccionar producto</labe>
                             <div id="select" class="control"></div>
                         </div>
-
+                        <div id="field_preUnitario" class="field">
+                            <label class="label">Precio unitario</label>
+                            <div class="control">
+                                <input id="punit" class="input" type="number" disabled>
+                            </div>
+                        </div>
                         <div class="field">
                             <label class="label">Cantidad</label>
                             <div class="control">
@@ -53,8 +59,9 @@
                     </form>
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success">Guardar</button>
-                    <button class="button" onclick="Modal.close()">Cancelar</button>
+                    <button id="save-button" class="button is-success">Guardar</button>
+                    <button id="edit-button" class="button is-warning">Editar</button>
+                    <button class="button" onclick="refs.modal.close()">Cancelar</button>
                 </footer>
             </div>
         </div>
@@ -66,12 +73,15 @@
     <script id="table-template" type="text/x-handlebars-template">
         <table class="table is-fullwidth is-hoverable">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Descripción</th>
-                    <th>Precio unitario</th>
-                    <th>Cantidad</th>
-                    <th>Precio total</th>
+ <tr style="
+                font-weight: bold;
+            ">
+                    <td>ID</td>
+                    <td>Nombre</td>
+                    <td>Precio unitario</td>
+                    <td>Cantidad</td>
+                    <td>Precio total</td>
+                    <td>Editar</td>
                 </tr>
             </thead>
             <tbody>
@@ -82,6 +92,7 @@
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
+                        <td><a onclick="refs.modalEditar.open({{ id }})"><img class="icon"src="https://icon-icons.com/icons2/685/PNG/512/edit2_icon-icons.com_61199.png" alt="titulo enlace"/></a></td>
                     </tr>
                 {{/ each }}
             </tbody>
@@ -92,6 +103,7 @@
                     <td></td>
                     <td>Total</td>
                     <td>{{ orderPrice }}</td>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>
@@ -99,8 +111,8 @@
 
     <!-- Template handlebars del select de productos -->
     <script id="select-template" type="text/x-handlebars-template">
-        <div class="select">
-            <select>
+        <div class="select" >
+            <select id="select-prod" disabled="false">
                 <option disabled selected value="">Seleccione un producto</option>
                 {{# each products }}
                     <option value="{{ id }}">{{ name }}</option>
@@ -115,6 +127,9 @@
 
 <!-- Componente de la modal-->
 <script src="/static/js/modal.js"></script>
+
+<!-- Componente de la modal-->
+<script src="/static/js/modalEditar.js"></script>
 
 <!-- Componente de la tabla -->
 <script src="/static/js/table.js"></script>
