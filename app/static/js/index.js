@@ -99,15 +99,6 @@
             onEditProduct: onEditProduct,        
         })
         ;
-        refs.modalEditar = ModalEditar.init({
-            el: '#modal',
-            products: state.products,
-            onProductSelect: onProductSelect,
-            onChangeQunatity: onChangeQunatity,
-            onAddProduct: onAddProduct,  
-            onEditProduct: onEditProduct,         
-        })
-        ;
         // Inicializamos la tabla
         refs.table = Table.init({
             el: '#orders',
