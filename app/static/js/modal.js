@@ -1,7 +1,7 @@
 const Modal = (function () {
 
 
-    function vaciarModal() //Completa los campos del modal con el producto pasado por parametro
+    function vaciarModal() //Vacia los campos del modal 
     {
         const preUnitario = document.getElementById('punit');
         const preTotal = document.getElementById('total-price');
@@ -36,7 +36,7 @@ const Modal = (function () {
      **/
 
      
-    function open($modal,idProducto="") {
+    function open($modal,idProducto,tipo) {
         const editTitle = document.getElementById('edit-title');
         const preUnitario = document.getElementById('field_preUnitario');
         const select = document.getElementById('select-prod');
@@ -46,32 +46,36 @@ const Modal = (function () {
         const cantidad= document.getElementById('quantity');
         $modal.classList.add('is-active');
 
-        if (idProducto!="")
-        {
-
-            select.disabled = true;
-            //cantidad.setAttribute("onkeyup","actualizarTotal(this.value)");
-            preUnitario.classList.remove('is-hidden');
-            editTitle.classList.remove('is-hidden');
-            editButton.classList.remove('is-hidden');
-    
-            saveTitle.classList.add('is-hidden');
-            saveButton.classList.add('is-hidden');
-            llenarModal(idProducto);
-            API.getOrderProduct(1,idProducto).then(function(r){window.onProductSelect(r);});
+        
+        switch(tipo) {
+            case "agregar":
+                vaciarModal();
+                select.disabled = false;
+                saveTitle.classList.remove('is-hidden');
+                saveButton.classList.remove('is-hidden');
+                cantidad.removeAttribute("onkeyup");
+                preUnitario.classList.add('is-hidden');
+                editButton.classList.add('is-hidden');
+                editTitle.classList.add('is-hidden');
+                window.cantidad();
+                break;
+            case "editar":
+                select.disabled = true;
+                //cantidad.setAttribute("onkeyup","actualizarTotal(this.value)");
+                preUnitario.classList.remove('is-hidden');
+                editTitle.classList.remove('is-hidden');
+                editButton.classList.remove('is-hidden');
+        
+                saveTitle.classList.add('is-hidden');
+                saveButton.classList.add('is-hidden');
+                llenarModal(idProducto);
+                API.getOrderProduct(1,idProducto).then(function(r){window.onProductSelect(r);});
+                break;
+            default:
+                console.log("error")
         }
-        else
-        {
-            vaciarModal();
-            select.disabled = false;
-            saveTitle.classList.remove('is-hidden');
-            saveButton.classList.remove('is-hidden');
-            cantidad.removeAttribute("onkeyup");
-            preUnitario.classList.add('is-hidden');
-            editButton.classList.add('is-hidden');
-            editTitle.classList.add('is-hidden');
-            window.cantidad();
-        }
+        
+        
     
     }
 
