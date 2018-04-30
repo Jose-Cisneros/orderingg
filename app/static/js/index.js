@@ -47,7 +47,15 @@
      *
      **/
     function onAddProduct() {
-        API.addProduct(1, state.selectedProduct, state.quantity)
+
+        if (state.quantity < 1)
+        {
+            alert("Por favor, ingrese una cantidad correcta");
+            refs.modal.close();
+        }
+        else
+        {
+            API.addProduct(1, state.selectedProduct, state.quantity)
             .then(function (r) {
                 if (r.error) {
                     console.error(r.error);
@@ -59,6 +67,7 @@
                     refs.modal.close();
                 }
             });
+        }
     }
 
 
