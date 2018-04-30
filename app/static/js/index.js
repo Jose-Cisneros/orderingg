@@ -51,7 +51,7 @@
         if (state.quantity < 1)
         {
             alert("Por favor, ingrese una cantidad correcta");
-            refs.modal.close();
+            
         }
         else
         {
@@ -59,6 +59,7 @@
             .then(function (r) {
                 if (r.error) {
                     console.error(r.error);
+		    alert("El producto ya existe en la orden");
                 } else {
                     API.getOrder().then(function (data) {
                         refs.table.update(data);
