@@ -81,7 +81,7 @@ class OrderingTestCase(TestCase):
         resp = self.client.post('/order/1/product', data=json.dumps(orderProduct), content_type='application/json')
 
         #Si la cantidad es negativa, la respuesta no puede ser "201 OK"
-        assert resp.status_code !== 201, "El producto no fue agregado a la orden"
+        assert resp.status_code != 201, "El producto no fue agregado a la orden"
 
     
 
