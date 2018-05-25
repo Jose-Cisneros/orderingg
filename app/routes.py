@@ -77,7 +77,12 @@ def addProductToOrder(pk):
             'error': '<product {}> exists in <order {}>. Use PUT method'
                 .format(product['id'], pk)
         }), 400
-
+    cantidad=product_data['quantity']
+    if (int(cantidad) < 1):
+        return jsonify({
+                'error': 'Quantity must be positive'
+            }), 400
+	
     orderProduct = OrderProduct(quantity=product_data['quantity'])
     orderProduct.product = Product.query.get(product['id'])
     order.products.append(orderProduct)
