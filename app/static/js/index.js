@@ -15,8 +15,12 @@
      * Actualiza el valor del precio total
      **/
     function updateTotalPrice() {
-        const totalPrice = state.selectedProduct.price * state.quantity;
-        $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`;
+        try {
+            const totalPrice = state.selectedProduct.price * state.quantity;
+            $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
+        } catch (e) {
+            $totalPrice.innerHTML = '';
+        }
     }
 
     /**
@@ -42,46 +46,48 @@
         updateTotalPrice();
     }
 
+    function onEditProduct() {
+        API.editProduct(1, state.selectedProduct.id, state.quantity)
+            .then(function (r) {
+                API.getOrder().then(function (data) {
+                    refs.table.update(data);
+                });
+
+                refs.modal.close();
+            });
+    }
+
     /**
      * Agrega un producto a una orden
      *
      **/
     function onAddProduct() {
-
-        if (state.quantity < 1)
-        {
-            alert("Por favor, ingrese una cantidad correcta");
-            
-        }
-        else
-        {
-            API.addProduct(1, state.selectedProduct, state.quantity)
+        return API.addProduct(1, state.selectedProduct, state.quantity)
             .then(function (r) {
                 if (r.error) {
-                    console.error(r.error);
-		    alert("El producto ya existe en la orden");
-                } else {
-                    API.getOrder().then(function (data) {
-                        refs.table.update(data);
+                    return Promise.reject({
+                        msg: "No puede existir 2 productos iguales en una orden"
                     });
-
-                    refs.modal.close();
                 }
+
+                API.getOrder().then(function (data) {
+                    refs.table.update(data);
+                });
+
+                refs.modal.close();
+            })
+            .catch(function (err) {
+                if (err.msg) {
+                    return Promise.reject(err);
+                }
+                return Promise.reject({
+                    msg: "Seleccione un producto"
+                });
             });
-        }
     }
 
-
-    /**
-     * Edita el producto de una orden
-     *
-     **/
-    function onEditProduct() {
-     
-        const cantidad = document.getElementById('quantity').value;
-        const idProducto = document.getElementById('select-prod').value;
-        const nombre= document.getElementById('select-prod').options[idProducto].innerText;
-        API.editProduct(1,idProducto, cantidad,API.getOrderProduct(1,idProducto))
+    function onDeleteProduct(productId) {
+        API.deleteProduct(1, productId)
             .then(function (r) {
                 if (r.error) {
                     console.error(r.error);
@@ -90,8 +96,6 @@
                         refs.table.update(data);
                         alert("El producto '" + nombre + "' ha sido actualizado!")
                     });
-
-                    refs.modal.close();
                 }
             });
     }
@@ -127,17 +131,19 @@
             products: state.products,
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
-            onAddProduct: onAddProduct,      
-            onEditProduct: onEditProduct,
-            onDeleteProduct: onDeleteProduct,        
-        })
-        ;
+            onAddProduct: onAddProduct,
+            onEditProduct: onEditProduct
+        });
+
         // Inicializamos la tabla
         refs.table = Table.init({
             el: '#orders',
             data: state.order
         });
-        //const $botonEditar = document.querySelector("");
+
+        refs.global = {
+            onDeleteProduct
+        }
     }
 
     init();

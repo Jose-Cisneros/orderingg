@@ -32,8 +32,6 @@
                 <header class="modal-card-head">
                     <p id="save-title" class="modal-card-title">Agregar producto</p>
                     <p id="edit-title" class="modal-card-title">Editar producto</p>
-                    <p id="delete-title" class="modal-card-title">Eliminar producto</p>
-                    
                     <button class="delete" aria-label="close" onclick="refs.modal.close()"></button>
                 </header>
                 <section class="modal-card-body">
@@ -51,7 +49,8 @@
                         <div class="field">
                             <label class="label">Cantidad</label>
                             <div class="control">
-                                <input id="quantity" class="input" type="number">
+                                <input id="quantity" class="input" type="number" min="1" value="1" required>
+                                <p class="help is-danger is-hidden">Por favor ingrese un numero mayor a 0</p>
                             </div>
                         </div>
 
@@ -61,7 +60,7 @@
                     </form>
                 </section>
                 <footer class="modal-card-foot">
-                    <button id="save-button" class="button is-success">Guardar</button>
+                    <button id="save-button" class="button is-success" disabled="disabled">Guardar</button>
                     <button id="edit-button" class="button is-warning">Editar</button>
                     <button id="delete-button" class="button is-danger">Eliminar</button>
                     <button class="button" onclick="refs.modal.close()">Cancelar</button>
@@ -76,17 +75,13 @@
     <script id="table-template" type="text/x-handlebars-template">
         <table class="table is-fullwidth is-hoverable">
             <thead>
-                <tr style="
-                font-weight: bold;
-            ">
-                    <td>ID</td>
-                    <td>Nombre</td>
-                    <td>Precio unitario</td>
-                    <td>Cantidad</td>
-                    <td>Precio total</td>
-                    <td>Editar</td>
-                    <td>Eliminar</td>
-
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Precio total</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -97,9 +92,15 @@
                         <td>{{ price }}</td>
                         <td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
-                        <td><a onclick="refs.modal.open({{ id }},'editar')"><i class="far fa-edit"></i></a></td>
-                        <td><a onclick="refs.modal.open({{ id }},'delete')"><i class="far fa-trash-alt"></i></a></td>
-                        
+                        <td>
+                            <button class="button is-small is-warning" onClick="refs.modal.openEdit({ id: {{ id }}, quantity: {{ quantity }} })">
+                                <i class="fa fa-edit"></i>
+                            </button>
+
+                            <button class="button is-small is-danger" onClick="refs.global.onDeleteProduct({{ id }})">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
                     </tr>
                 {{/ each }}
             </tbody>
@@ -111,7 +112,6 @@
                     <td>Total</td>
                     <td>{{ orderPrice }}</td>
                     <td></td>
-                    <td></td>
                 </tr>
             </tfoot>
         </table>
@@ -119,14 +119,16 @@
 
     <!-- Template handlebars del select de productos -->
     <script id="select-template" type="text/x-handlebars-template">
-        <div class="select" >
-            <select id="select-prod" disabled="false">
+        <div class="select">
+            <select id="select-prod" required>
                 <option disabled selected value="">Seleccione un producto</option>
                 {{# each products }}
                     <option value="{{ id }}">{{ name }}</option>
                 {{/ each }}
             </select>
         </div>
+
+        <p class="help is-danger is-hidden"></p>
     </script>
     {% endraw %}
 </body>
