@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from flask import json
+from flask import json, jsonify
 from flask_testing import TestCase
 
 from app import create_app, db
@@ -39,6 +39,7 @@ class OrderingTestCase(TestCase):
 
     def test_crear_producto(self):
         data = {
+            'id':1,
             'name': 'Tenedor',
             'price': 50
         }
@@ -51,6 +52,40 @@ class OrderingTestCase(TestCase):
 
         # Verifica que en la lista de productos haya un solo producto
         self.assertEqual(len(p), 1, "No hay productos")
+
+    def test_OrderProduct_QuantityNegativo(self):
+        
+        #Creo un producto
+        producto = {
+            'id':1,
+            'name': 'Tenedor',
+            'price': 50
+        }
+
+        self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+
+        #Creo una orden
+        order = {
+                        "id": 1 
+                }
+        
+        order = Order()
+        #Guardo la orden en la db directo ya que no está en endpoint en la api
+        db.session.add(order)
+        db.session.commit()
+
+        orderProduct =  {"quantity":-1,"product":{"id":1}}
+
+            
+        
+        resp = self.client.post('/order/1/product', data=json.dumps(orderProduct), content_type='application/json')
+
+        #Si la cantidad es negativa, la respuesta no puede ser "201 OK"
+        assert resp.status_code !== 201, "El producto no fue agregado a la orden"
+
+    
+
+
 
 if __name__ == '__main__':
     unittest.main()
