@@ -115,6 +115,16 @@ class OrderingTestCase(TestCase):
 
         self.assert200(resp)
 
+    def test_order_product_GET_404(self):
+        #Testea el caso en que el producto y la orden no coincidan
+    
+
+        #envio el GET
+        resp = self.client.get('/order/1/product/1')
+        
+        assert resp.status_code == 404
+
+
 
 
 
