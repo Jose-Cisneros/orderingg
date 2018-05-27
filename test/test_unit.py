@@ -146,13 +146,6 @@ class OrderingTestCase(TestCase):
         #Guardo la orden en la db directo ya que no está en endpoint en la api
         db.session.add(order)
         db.session.commit()
-        
-        producto = {
-            'quantity':1,
-            'id':1,
-            'name': 'Tenedor',
-            'price': 500
-        }
 
         orderProduct =  {"quantity":1,"product":{"id":1}}
 
@@ -166,6 +159,9 @@ class OrderingTestCase(TestCase):
         data = json.loads(resp.data)
         assert data['quantity']==2,"No se cambio el precio del producto"
 
+    def test_order_product_PUT(self):
+        #Verifica que el valor de totalPrice de la clase OrderProduct se calcule correctamente
+                
 
 
 
