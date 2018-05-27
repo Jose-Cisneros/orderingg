@@ -4,6 +4,7 @@ import time
 import threading
 
 from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 
 from app import create_app, db
 from app.models import Product, Order, OrderProduct
@@ -36,8 +37,8 @@ class Ordering(unittest.TestCase):
 
         time.sleep(1)
 
-        self.driver = webdriver.Chrome()
-
+        self.driver = webdriver.Edge()
+    '''
     def test_title(self):
         driver = self.driver
         driver.get(self.baseURL)
@@ -45,7 +46,38 @@ class Ordering(unittest.TestCase):
         add_product_button.click()
         modal = driver.find_element_by_id('modal')
         assert modal.is_displayed(), "El modal no esta visible"
-
+    
+    '''
+    def test_cantidades_negativas(self):
+        driver = self.driver
+        driver.get(self.baseURL)
+        
+        orden = Order(id= 1)
+        db.session.add(orden)
+       
+        #Creo un producto
+        prod = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(prod)
+        
+        db.session.commit()
+        
+       
+        driver.get(self.baseURL)
+   
+        add_product_button = driver.find_element_by_xpath('/html/body/main/div[1]/div/button')
+        add_product_button.click()
+       
+        select = Select(driver.find_element_by_id('select-prod'))
+        select.select_by_visible_text("Tenedor")
+        quantity= driver.find_element_by_id('quantity')
+        quantity.clear()
+        quantity.send_keys("-1")
+        
+        save_button = driver.find_element_by_id('save-button')
+       
+       
+        self.assertfalse(save_button.is_enabled(),"No debería habilitarse el boton guardar con cantidad negativa")
+    
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
 
