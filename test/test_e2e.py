@@ -177,7 +177,7 @@ class Ordering(unittest.TestCase):
         delete_product_button.click()
         driver.get(self.baseURL)
         nombreTabla2=driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[2]').text
-        assert nombreTabla1==nombreTabla2, "No se borro el elemento"
+        assert nombreTabla1!=nombreTabla2, "No se borro el elemento"
         
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
