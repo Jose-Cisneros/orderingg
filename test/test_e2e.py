@@ -72,11 +72,48 @@ class Ordering(unittest.TestCase):
         quantity= driver.find_element_by_id('quantity')
         quantity.clear()
         quantity.send_keys("-1")
-        time.sleep(3)
         save_button = driver.find_element_by_id('save-button')
        
        
         self.assertFalse(save_button.is_enabled(),"No deberia habilitarse el boton guardar con cantidad negativa")
+
+
+    def test_repetidos_error(self):
+
+        driver = self.driver
+        driver.get(self.baseURL)
+        
+        orden = Order(id= 1)
+        db.session.add(orden)
+       
+        #Creo un producto
+        prod = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(prod)
+
+        #Creo el OrderProduct
+        orderProduct =  OrderProduct(order_id=1,product_id=1,quantity=1)
+        db.session.add(orderProduct)
+        db.session.commit()
+        
+        driver.get(self.baseURL)
+
+        #intento agregar otro producto
+        add_product_button = driver.find_element_by_xpath('/html/body/main/div[1]/div/button')
+        add_product_button.click()
+       
+        select = Select(driver.find_element_by_id('select-prod'))
+        select.select_by_visible_text("Tenedor")
+        quantity= driver.find_element_by_id('quantity')
+        quantity.clear()
+        quantity.send_keys("1")
+
+        save_button = driver.find_element_by_id('save-button')
+        save_button.click()
+
+        error= driver.find_element_by_id('errorSelect')
+      
+        assert(error.is_displayed())
+
     
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
