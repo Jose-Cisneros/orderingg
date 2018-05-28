@@ -72,11 +72,11 @@ class Ordering(unittest.TestCase):
         quantity= driver.find_element_by_id('quantity')
         quantity.clear()
         quantity.send_keys("-1")
-        
+        time.sleep(3)
         save_button = driver.find_element_by_id('save-button')
        
        
-        self.assertfalse(save_button.is_enabled(),"No debería habilitarse el boton guardar con cantidad negativa")
+        self.assertFalse(save_button.is_enabled(),"No deberia habilitarse el boton guardar con cantidad negativa")
     
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
