@@ -200,6 +200,41 @@ class OrderingTestCase(TestCase):
         assert data['orderPrice']==170.0,"El precio sumado esta mal"
 
 
+    def test_order_product_DELETE(self):
+
+        #Creo un producto
+        producto = {
+            'id':1,
+            'name': 'Tenedor',
+            'price': 50
+        }
+       
+        self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+
+        #Creo una orden
+        order = {
+                        "id": 1 
+                }
+        
+        order = Order()
+        #Guardo la orden en la db directo ya que no está en endpoint en la api
+        db.session.add(order)
+        db.session.commit()
+
+        orderProduct =  {"quantity":1,"product":{"id":1}}
+
+        #Creo el OrderProduct
+        self.client.post('/order/1/product', data=json.dumps(orderProduct), content_type='application/json')
+        #Lo elimino
+        self.client.delete('/order/1/product/1', content_type='application/json')
+        resp = self.client.get('/order/1')
+        data = json.loads(resp.data)
+        self.assertEqual(len(data["products"]), 0, "Hay productos, fallo el test")
+
+
+
+
+
 
 
 if __name__ == '__main__':
