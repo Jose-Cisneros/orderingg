@@ -36,7 +36,9 @@ class Ordering(unittest.TestCase):
 
         time.sleep(1)
 
-        self.driver = webdriver.Chrome('/Users/titiloxx/Desktop/Cosas papa/chromedriver 2') 
+        #self.driver = webdriver.Chrome('/Users/titiloxx/Desktop/Cosas papa/chromedriver 2') 
+        self.driver = webdriver.Chrome('/Users/mariomerlano/Downloads/chromedriver 2') 
+        
 
         #self.driver = webdriver.Edge()
     
@@ -101,6 +103,7 @@ class Ordering(unittest.TestCase):
         db.drop_all()
         self.driver.close()
         self.app_context.pop()
+
 
 if __name__ == "__main__":
     unittest.main()
