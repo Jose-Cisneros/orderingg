@@ -132,7 +132,16 @@ class Ordering(unittest.TestCase):
         time.sleep(1)
         assert(error.is_displayed())
 
-    
+    def test_eliminar_elemento(self):
+        driver = self.driver 
+        driver.get(self.baseURL)
+        nombreTabla1=driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[2]').text
+        delete_product_button = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[6]/button[2]')
+        delete_product_button.click()
+        driver.get(self.baseURL)
+        nombreTabla2=driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[2]').text
+        assert nombreTabla1==nombreTabla2, "No se borro el elemento"
+        
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
 
