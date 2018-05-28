@@ -44,7 +44,25 @@ const Modal = (function () {
         toggleError: function () {
             const $errorQuantity = this.$el.parentElement
                 .querySelector('.help');
+            $cantidad = document.getElementById("quantity").value;
+            $save = document.getElementById("save-button");
+            $e = document.getElementById("select-prod");
+           
+            if ($e.value != ""){
+                if ($cantidad < 1) {
+                    
+                    $save.setAttribute('disabled', 'disabled');
 
+
+                } else {
+
+                    $save.removeAttribute('disabled');
+                }
+            }
+
+            
+           
+            
             this.$el.classList.toggle('is-danger', !this.isValid);
             $errorQuantity.classList.toggle('is-hidden', this.isValid);
         }
