@@ -231,6 +231,30 @@ class OrderingTestCase(TestCase):
         data = json.loads(resp.data)
         self.assertEqual(len(data["products"]), 0, "Hay productos, fallo el test")
 
+#Hacer un test de unidad para verificar que no esté permitido la creación de un producto con el 
+#name como string vacío
+
+    def test_order_product_name_vacio(self):
+        
+        #Creo un producto
+        producto = {
+            'id':1,
+            'name': '',
+            'price': 50
+        }
+       
+        resp = self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+        self.assertNotEqual(resp.status_code, 200, "Test fallido, no se puede crear un producto con nombre string vacio")
+
+        
+        
+        
+
+        
+
+        
+
+
 
 
 
