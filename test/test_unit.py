@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import unittest
 
@@ -123,6 +124,112 @@ class OrderingTestCase(TestCase):
         resp = self.client.get('/order/1/product/1')
         
         assert resp.status_code == 404
+
+    def test_order_product_PUT(self):
+        #Prueba el funcionamiento del método PUT en el endpoint /order/<pk_order>/product/<pk_product>.
+                
+                #Creo un producto
+        producto = {
+            'id':1,
+            'name': 'Tenedor',
+            'price': 50
+        }
+       
+        self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+
+        #Creo una orden
+        order = {
+                        "id": 1 
+                }
+        
+        order = Order()
+        #Guardo la orden en la db directo ya que no está en endpoint en la api
+        db.session.add(order)
+        db.session.commit()
+
+        orderProduct =  {"quantity":1,"product":{"id":1}}
+
+        #Creo el OrderProduct
+        self.client.post('/order/1/product', data=json.dumps(orderProduct), content_type='application/json')
+
+        #Cambio la cantidad del order producto y hago un put en el endpoint
+        orderProduct =  {"quantity":2,"product":{"id":1}}
+        self.client.put('/order/1/product/1', data=json.dumps(orderProduct), content_type='application/json')
+        resp = self.client.get('/order/1/product/1')
+        data = json.loads(resp.data)
+        assert data['quantity']==2,"No se cambio el precio del producto"
+
+    def test_order_product_Total(self):
+        #Verifica que el valor de totalPrice de la clase OrderProduct se calcule correctamente
+
+                #Creo un producto
+        producto = {
+            'id':1,
+            'name': 'Tenedor',
+            'price': 50
+        }
+       
+        self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+        #Creo otro producto
+        producto["id"]=2
+        producto["name"]="Cuchillo"
+        producto["price"]=60
+        self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+        #Creo una orden
+        order = {
+                        "id": 1 
+                }
+        
+        order = Order()
+        #Guardo la orden en la db directo ya que no está en endpoint en la api
+        db.session.add(order)
+        db.session.commit()
+
+        orderProduct =  {"quantity":1,"product":{"id":1}}
+
+        #Creo el OrderProduct
+        self.client.post('/order/1/product', data=json.dumps(orderProduct), content_type='application/json')
+
+        orderProduct =  {"quantity":2,"product":{"id":2}}
+
+        #Creo el OrderProduct
+        self.client.post('/order/1/product', data=json.dumps(orderProduct), content_type='application/json')
+
+        resp = self.client.get('/order/1')
+        data = json.loads(resp.data)
+        assert data['orderPrice']==170.0,"El precio sumado esta mal"
+
+
+    def test_order_product_DELETE(self):
+
+        #Creo un producto
+        producto = {
+            'id':1,
+            'name': 'Tenedor',
+            'price': 50
+        }
+       
+        self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+
+        #Creo una orden
+        order = {
+                        "id": 1 
+                }
+        
+        order = Order()
+        #Guardo la orden en la db directo ya que no está en endpoint en la api
+        db.session.add(order)
+        db.session.commit()
+
+        orderProduct =  {"quantity":1,"product":{"id":1}}
+
+        #Creo el OrderProduct
+        self.client.post('/order/1/product', data=json.dumps(orderProduct), content_type='application/json')
+        #Lo elimino
+        self.client.delete('/order/1/product/1', content_type='application/json')
+        resp = self.client.get('/order/1')
+        data = json.loads(resp.data)
+        self.assertEqual(len(data["products"]), 0, "Hay productos, fallo el test")
 
 
 
