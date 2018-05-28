@@ -236,6 +236,8 @@ class OrderingTestCase(TestCase):
 
     def test_order_product_name_vacio(self):
         
+        #Hacer un test de unidad para probar el funcionamiento del método GET en el endpoint /product.
+
         #Creo un producto
         producto = {
             'id':1,
@@ -247,16 +249,22 @@ class OrderingTestCase(TestCase):
         self.assertNotEqual(resp.status_code, 200, "Test fallido, no se puede crear un producto con nombre string vacio")
 
         
-        
-        
+    def test_product_GET(self):
 
-        
+        #Creo un producto
+        producto = {
+            'id':1,
+            'name': 'Tenedor',
+            'price': 50
+        }
+       
+        self.client.post('/product', data=json.dumps(producto), content_type='application/json')
+        #Envio el GET
+        resp = self.client.get('/product')
 
-        
+        self.assert200(resp)
 
-
-
-    def test_order_GET(self):
+    def test_producto_GET(self):
         #Creo una orden
         order = {
                         "id": 1 
