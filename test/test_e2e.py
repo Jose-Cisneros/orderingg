@@ -36,11 +36,11 @@ class Ordering(unittest.TestCase):
 
         time.sleep(1)
 
-        #self.driver = webdriver.Chrome('/Users/titiloxx/Desktop/Cosas papa/chromedriver 2') 
-        self.driver = webdriver.Chrome('/Users/mariomerlano/Downloads/chromedriver 2') 
+        #self.driver = webdriver.Chrome() 
+    
         
 
-        #self.driver = webdriver.Edge()
+        self.driver = webdriver.Edge()
     
     def test_title(self):
         driver = self.driver
@@ -51,6 +51,25 @@ class Ordering(unittest.TestCase):
         assert modal.is_displayed(), "El modal no esta visible"
     
     def test_modalEdit(self):
+        
+        driver = self.driver
+        driver.get(self.baseURL)
+        
+        #Creo una orden
+        orden = Order(id= 1)
+        db.session.add(orden)
+       
+        #Creo un producto
+        prod = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(prod)
+
+        #Creo el OrderProduct
+        orderProduct =  OrderProduct(order_id=1,product_id=1,quantity=1)
+        db.session.add(orderProduct)
+        db.session.commit()
+        
+        driver.get(self.baseURL)
+        
         driver = self.driver 
         driver.get(self.baseURL)
         nombreTabla=driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[2]').text
@@ -133,8 +152,26 @@ class Ordering(unittest.TestCase):
         assert(error.is_displayed())
 
     def test_eliminar_elemento(self):
-        driver = self.driver 
+        
+        driver = self.driver
         driver.get(self.baseURL)
+        
+        #Creo una orden
+        orden = Order(id= 1)
+        db.session.add(orden)
+       
+        #Creo un producto
+        prod = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(prod)
+
+        #Creo el OrderProduct
+        orderProduct =  OrderProduct(order_id=1,product_id=1,quantity=1)
+        db.session.add(orderProduct)
+        db.session.commit()
+        
+        driver.get(self.baseURL)
+        
+      
         nombreTabla1=driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[2]').text
         delete_product_button = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr[1]/td[6]/button[2]')
         delete_product_button.click()
