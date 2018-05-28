@@ -36,9 +36,9 @@ class Ordering(unittest.TestCase):
 
         time.sleep(1)
 
-        self.driver = webdriver.Chrome('/Users/titiloxx/Desktop/Cosas papa/chromedriver 2') 
+        #self.driver = webdriver.Chrome('/Users/titiloxx/Desktop/Cosas papa/chromedriver 2') 
 
-        #self.driver = webdriver.Edge()
+        self.driver = webdriver.Edge()
     
     def test_title(self):
         driver = self.driver
@@ -127,7 +127,7 @@ class Ordering(unittest.TestCase):
         save_button.click()
 
         error= driver.find_element_by_id('errorSelect')
-      
+        time.sleep(1)
         assert(error.is_displayed())
 
     
