@@ -232,6 +232,20 @@ class OrderingTestCase(TestCase):
         self.assertEqual(len(data["products"]), 0, "Hay productos, fallo el test")
 
 
+    def test_order_GET(self):
+        #Creo una orden
+        order = {
+                        "id": 1 
+                }
+        
+        order = Order()
+        #Guardo la orden en la db directo ya que no está en endpoint en la api
+        db.session.add(order)
+        db.session.commit()
+        #Envio el GET
+        resp = self.client.get('/order/1')
+
+        self.assert200(resp)
 
 
 
