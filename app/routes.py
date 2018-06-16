@@ -14,6 +14,11 @@ def hello():
     """Renderiza la vista."""
     return render_template('orders.html')
 
+@rest.route("/test", methods=['GET'])
+def test():
+    return jsonify({'Im a teapot'}), 418
+
+
 
 @rest.route("/product", methods=['GET', 'POST'])
 def products():
@@ -35,14 +40,16 @@ def products():
         return jsonify([i.serialize for i in p])
 
 
-@rest.route("/order", methods=['GET'])
+@rest.route("/order", methods=['GET', 'POST'])
 def orders():
     """
     Obtiene todas las ordenes
     """
-
-    orders = Order.query.all()
-    return jsonify([order.serialize for order in orders])
+    if request.method == 'GET':
+        orders = Order.query.all()
+        return jsonify([order.serialize for order in orders])
+    if request.method == 'POST':
+        return jsonify({'Im a teapot'}), 418
 
 @rest.route("/order/<pk>", methods=['GET'])
 def order(pk):
