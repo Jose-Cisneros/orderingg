@@ -2,6 +2,17 @@ __pycache_/
 *.py[cod]
 *$py.class
 .pytest_cache/
+.eslintrc.json
+.flake8
+bin/
+lib/
+lib64
+orderingg.zip
+orderingg/
+pyvenv.cfg
+selenium/
+share/
+
 
 app.db
 test.db
