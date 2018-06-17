@@ -1,15 +1,15 @@
 (function () {
-    const $totalPrice = document.querySelector('#total-price');
+    const $totalPrice = document.querySelector("#total-price");
     // Estado de la aplicacion
     const state = {
         products: API.getProducts(),
         selectedProduct: null,
         quantity: 0,
         order: API.getOrder()
-    }
+    };
     window.onProductSelect=seleccionarProducto;
     window.cantidad=vaciarCantidad;
-    const refs = {}
+    const refs = {};
 
     /**
      * Actualiza el valor del precio total
@@ -17,9 +17,9 @@
     function updateTotalPrice() {
         try {
             const totalPrice = state.selectedProduct.price * state.quantity;
-            $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
+            $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`;
         } catch (e) {
-            $totalPrice.innerHTML = '';
+            $totalPrice.innerHTML = "";
         }
     }
 
@@ -94,16 +94,15 @@
                 } else {
                     API.getOrder().then(function (data) {
                         refs.table.update(data);
-                        alert("El producto '" + nombre + "' ha sido actualizado!")
-                    });
-                }
+                        alert("El producto " + nombre +  "ha sido actualizado!");});
+              };
             });
     }
 
     function onDeleteProduct() {
-     
-        const idProducto = document.getElementById('select-prod').value;
-        const nombre= document.getElementById('select-prod').options[idProducto].innerText;
+
+        const idProducto = document.getElementById("select-prod").value;
+        const nombre= document.getElementById("select-prod").options[idProducto].innerText;
 
         API.deleteProduct(1,idProducto).then(function (r) {
             if (r.error) {
@@ -111,7 +110,7 @@
             } else {
                 API.getOrder().then(function (data) {
                     refs.table.update(data);
-                    alert("El producto '" + nombre + "' ha sido eliminado!")
+                    alert("El producto " + nombre +  "ha sido eliminado!");
                 });
 
                 refs.modal.close();
@@ -127,7 +126,7 @@
      **/
     function init() {
         refs.modal = Modal.init({
-            el: '#modal',
+            el: "#modal",
             products: state.products,
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
@@ -137,16 +136,15 @@
 
         // Inicializamos la tabla
         refs.table = Table.init({
-            el: '#orders',
+            el: "#orders",
             data: state.order
         });
 
         refs.global = {
             onDeleteProduct
-        }
+        };
     }
 
     init();
     window.refs = refs;
-})()
-
+})();
