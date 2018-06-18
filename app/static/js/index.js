@@ -7,8 +7,8 @@
         quantity: 0,
         order: API.getOrder()
     };
-    window.onProductSelect=seleccionarProducto;
-    window.cantidad=vaciarCantidad;
+    window.onProductSelect = seleccionarProducto;
+    window.cantidad = vaciarCantidad;
     const refs = {};
 
     /**
@@ -17,7 +17,7 @@
     function updateTotalPrice() {
         try {
             const totalPrice = state.selectedProduct.price * state.quantity;
-            $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`;
+            $totalPrice.innerHTML = "Precio total: " + totalPrice;
         } catch (e) {
             $totalPrice.innerHTML = "";
         }
@@ -31,12 +31,15 @@
         state.selectedProduct = selectedProduct;
         updateTotalPrice();
     }
+
     function seleccionarProducto(selectedProduct) {
         state.selectedProduct = selectedProduct;
     }
+
     function vaciarCantidad() {
         state.quantity = 0;
     }
+
     /**
      * Dispara la actualizacion del precio total del producto
      * al cambiar la cantidad del producto
@@ -87,6 +90,10 @@
     }
 
     function onDeleteProduct(productId) {
+
+
+        const nombre= document.getElementById("select-prod").options[productId].innerText;
+
         API.deleteProduct(1, productId)
             .then(function (r) {
                 if (r.error) {
@@ -94,8 +101,9 @@
                 } else {
                     API.getOrder().then(function (data) {
                         refs.table.update(data);
-                        alert("El producto " + nombre +  "ha sido actualizado!");});
-              };
+                        alert("El producto" + nombre + " ha sido actualizado!")
+                    });
+                }
             });
     }
 
@@ -104,13 +112,13 @@
         const idProducto = document.getElementById("select-prod").value;
         const nombre= document.getElementById("select-prod").options[idProducto].innerText;
 
-        API.deleteProduct(1,idProducto).then(function (r) {
+        API.deleteProduct(1, idProducto).then(function (r) {
             if (r.error) {
                 console.error(r.error);
             } else {
                 API.getOrder().then(function (data) {
                     refs.table.update(data);
-                    alert("El producto " + nombre +  "ha sido eliminado!");
+                    alert("El producto" + nombre + " ha sido eliminado!");
                 });
 
                 refs.modal.close();
@@ -146,5 +154,5 @@
     }
 
     init();
-    window.refs = refs;
+    window.refs = refs; 
 })();
